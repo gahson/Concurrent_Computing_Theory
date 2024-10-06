@@ -1,23 +1,51 @@
-
-class MyRunnable implements Runnable {
-    private int threadId;
-
-    public MyRunnable(int id) {
-        this.threadId = id;
-    }
-
-    @Override
-    public void run() {
-        System.out.println("Wątek " + threadId + " działa");
-    }
-}
-
 public class threads_excersises {
-    public static void main(String[] args) {
-        for (int i = 1; i <= 5; i++) {
-            MyRunnable myRunnable = new MyRunnable(i);
-            Thread thread = new Thread(myRunnable);
-            thread.start();
+    private static int w=0;
+    private static final int NUM_OF_LOOPS=10;
+    private static final int NUM_OF_THREADS=10;//needs to be even to have same amount od decreasing and increasing threads
+
+    static class increasingThreads implements Runnable {
+
+
+        @Override
+        public void run() {
+            for (int i=0;i<NUM_OF_LOOPS;i++){
+                w++;
+            }
         }
+    }
+
+    static class decreasingThreads implements Runnable {
+
+
+        @Override
+        public void run() {
+            for (int i=0;i<NUM_OF_LOOPS;i++){
+                w--;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Thread[] threads=new Thread[NUM_OF_THREADS];
+        for (int i=0;i<NUM_OF_THREADS;i++){
+            if (i%2==0){
+                threads[i]=new Thread(new increasingThreads());
+            }
+            else {
+                threads[i]=new Thread(new decreasingThreads());
+            }
+            threads[i].start();
+        }
+
+        for (int i=0;i<NUM_OF_THREADS;i++){
+            try {
+                threads[i].join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println(w);
+
+
     }
 }
