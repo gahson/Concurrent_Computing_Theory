@@ -1,6 +1,7 @@
 public class threads_excersises {
 
     private static int w=0;
+
     static class increasingThreads implements Runnable {
 
         private int numOfLoops;
@@ -10,7 +11,9 @@ public class threads_excersises {
         @Override
         public void run() {
             for (int i=0;i<numOfLoops;i++){
-                w++;
+                synchronized(threads_excersises.class){
+                    w++;
+                }
             }
         }
     }
@@ -23,7 +26,9 @@ public class threads_excersises {
         @Override
         public void run() {
             for (int i=0;i<numOfLoops;i++){
-                w--;
+                synchronized(threads_excersises.class){
+                    w--;
+                }
             }
         }
     }
